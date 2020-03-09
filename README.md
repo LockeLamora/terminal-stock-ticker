@@ -7,7 +7,11 @@ run ``` bundle install```
 
 # To Run
 
-run ```ruby ticker.rb```
+Using only your holdings defined in assets.csv:  ```ruby ticker.rb```
+
+Along with additional symbols: ```ruby ticker.rb tsla aapl```
+
+Note, for non-nasdaq symbols, be careful which symbols you provide, ie LSE shares need the .l append (e.g. kie.l)
 
 # To add your own holdings
 

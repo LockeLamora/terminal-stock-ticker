@@ -79,7 +79,6 @@ module DisplayOutput
     end
 
     table = TTY::Table.new(header: headers, rows: rows)
-    table.render :unicode
     puts table
 
     puts 'Gains converted to ' + portfolio.base_currency

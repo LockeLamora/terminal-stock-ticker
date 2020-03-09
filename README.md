@@ -3,7 +3,9 @@ A ruby-based Ticker for tracking personal stocks and shares
 
 # To Install
 
-run ``` bundle install```
+Clone Repo
+
+Run ``` bundle install```
 
 # To Run
 
@@ -16,3 +18,7 @@ Note, for non-nasdaq symbols, be careful which symbols you provide, ie LSE share
 # To add your own holdings
 
 modify the assets.csv file. Shares currently worth more than the highest price paid for them will be output in yellow. an Average profit/loss column will also be added.
+
+# Warning
+
+Known issue: If your paid-for currency is different than the stock currency (eg buying nasdaq with GBP) then at the moment the  summary in the last two columns will be incorrect due to limitations of the API

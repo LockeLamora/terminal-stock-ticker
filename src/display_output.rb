@@ -18,17 +18,17 @@ module DisplayOutput
       return
     end
     headers = []
-    headers.push 'Symbol'
-    headers.push 'Name'
-    headers.push 'Mkt price'
-    headers.push 'delta'
-    headers.push 'delta%'
-    headers.push 'Owned price'
-    headers.push 'Num'
-    headers.push  'Most paid'
-    headers.push  '£Gain'
-    headers.push '%Gain'
-    headers.push 'Curr'
+    headers.push 'Symbol'.light_blue
+    headers.push 'Name'.light_blue
+    headers.push 'Mkt price'.light_blue
+    headers.push 'delta'.light_blue
+    headers.push 'delta%'.light_blue
+    headers.push 'Owned price'.light_blue
+    headers.push 'Num'.light_blue
+    headers.push  'Most paid'.light_blue
+    headers.push  '£Gain'.light_blue
+    headers.push '%Gain'.light_blue
+    headers.push 'Curr'.light_blue
 
     rows = []
     portfolio.symbol_shortlist.each do |symbol|

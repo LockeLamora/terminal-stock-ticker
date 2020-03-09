@@ -28,7 +28,7 @@ module DisplayOutput
     headers.push  'Most paid'.light_blue
     headers.push  '£Gain'.light_blue
     headers.push '%Gain'.light_blue
-    headers.push 'Curr'.light_blue
+    headers.push 'Rate'.light_blue
 
     rows = []
     portfolio.symbol_shortlist.each do |symbol|

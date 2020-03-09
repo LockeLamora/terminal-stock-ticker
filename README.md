@@ -1,6 +1,7 @@
 # terminal-stock-ticker
 A ruby-based Ticker for tracking personal stocks and shares
 
+![](images/readme.png)
 # To Install
 
 Clone Repo
@@ -21,6 +22,6 @@ Note, for non-nasdaq symbols, be careful which symbols you provide, ie LSE share
 
 # To add your own holdings
 
-modify the assets.csv file, giving the prices paid in pence (or whatever your lowest denomination is). 
+modify the assets.csv file, giving the prices paid in pence (or whatever your lowest denomination is).
 
 Shares currently worth more than the highest price paid for them will be output in yellow. An Average profit/loss column will also be added.

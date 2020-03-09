@@ -15,6 +15,7 @@ module DisplayOutput
     headers.push 'Num'
     headers.push  'Most paid'
     headers.push  '£+/-'
+    headers.push '% +/-'
 
     rows = []
     portfolio.symbols.each do |symbol_obj|
@@ -48,8 +49,15 @@ module DisplayOutput
         content = (content/100).round(2)
         symbol_obj[1].gains > 0 ? content = content.to_s.green : content = content.to_s.red
       end
-
       row << content
+
+      content = symbol_obj[1].average_delta
+      unless symbol_obj[1].average_delta.nil?
+        content = content.round(2)
+        symbol_obj[1].gains > 0 ? content = content.to_s.green : content = content.to_s.red
+      end
+      row << content
+
       rows << row
     end
 

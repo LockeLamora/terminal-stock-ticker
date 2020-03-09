@@ -4,7 +4,19 @@ require 'tty-table'
 module DisplayOutput
 
   def display_ticker(portfolio)
+    generate_table(portfolio)
+
+    if portfolio.invalid_symbols.size > 0
+      puts 'Invalid symbols detected ' + portfolio.invalid_symbols.map { |i| i.upcase}.join(",").red
+    end
+  end
+
+  def generate_table(portfolio)
     system('clear') || system('cls')
+    if portfolio.symbol_shortlist.size < 1
+      puts "No valid symbols detected".red
+      return
+    end
     headers = []
     headers.push 'Symbol'
     headers.push 'Name'
@@ -71,8 +83,5 @@ module DisplayOutput
     puts table
 
     puts 'Gains converted to ' + portfolio.base_currency
-    if portfolio.invalid_symbols.size > 0
-      puts 'Invalid symbols detected ' + portfolio.invalid_symbols.map { |i| i.upcase}.join(",").red
-    end
   end
 end

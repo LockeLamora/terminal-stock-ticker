@@ -1,9 +1,10 @@
 class TkrSymbol
   attr_reader :symbol, :price, :percentage_delta, :price_delta, :average_owned_price, :highest_owned_price,
-              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency
+              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency, :valid
 
   def initialize(symbol)
     @symbol = symbol
+    @valid = false
     self
   end
 
@@ -65,6 +66,7 @@ class TkrSymbol
 
   def set_name(name)
     @name = name
+    @valid = true
   end
 
   def set_currency(currency)

@@ -16,7 +16,6 @@ def update_loop(currency)
   while true do
     @portfolio.update
     display_ticker(@portfolio)
-    puts 'Gains converted to ' + currency
     sleep 10
   end
 end

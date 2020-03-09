@@ -19,47 +19,47 @@ module DisplayOutput
     headers.push 'Curr'
 
     rows = []
-    portfolio.symbols.each do |symbol_obj|
+    portfolio.symbol_shortlist.each do |symbol|
       row = []
 
-      content = symbol_obj[1].symbol
-      symbol_obj[1].percentage_delta > 0 ? content = content.green : content = content.red
-      symbol_obj[1].exceeded_highest_price ? content = content.yellow : nil
+      content = symbol
+      portfolio.symbols[symbol].percentage_delta > 0 ? content = content.green : content = content.red
+      portfolio.symbols[symbol].exceeded_highest_price ? content = content.yellow : nil
       row << content
 
-      content = symbol_obj[1].name
+      content = portfolio.symbols[symbol].name
       row << content
 
-      content = symbol_obj[1].price.to_s + ' ' + symbol_obj[1].currency
+      content = portfolio.symbols[symbol].price.to_s + ' ' + portfolio.symbols[symbol].currency
       row << content
 
-      content = symbol_obj[1].price_delta.round(2).to_s.gsub('-', '')
-      symbol_obj[1].price_delta > 0 ? content = content.to_s.green : content = content.to_s.red
+      content = portfolio.symbols[symbol].price_delta.round(2).to_s.gsub('-', '')
+      portfolio.symbols[symbol].price_delta > 0 ? content = content.to_s.green : content = content.to_s.red
       row << content
 
-      content = symbol_obj[1].percentage_delta.round(2).to_s.gsub('-', '') + '%'
-      symbol_obj[1].percentage_delta > 0 ? content = content.to_s.green : content = content.to_s.red
+      content = portfolio.symbols[symbol].percentage_delta.round(2).to_s.gsub('-', '') + '%'
+      portfolio.symbols[symbol].percentage_delta > 0 ? content = content.to_s.green : content = content.to_s.red
       row << content
 
-      row.push symbol_obj[1].average_owned_price.to_s
-      row.push symbol_obj[1].number_owned.to_s
-      row.push symbol_obj[1].highest_owned_price.to_s
+      row.push portfolio.symbols[symbol].average_owned_price.to_s
+      row.push portfolio.symbols[symbol].number_owned.to_s
+      row.push portfolio.symbols[symbol].highest_owned_price.to_s
 
-      content = symbol_obj[1].gains
-      unless symbol_obj[1].gains.nil?
+      content = portfolio.symbols[symbol].gains
+      unless portfolio.symbols[symbol].gains.nil?
         content = (content/100).round(2)
-        symbol_obj[1].gains > 0 ? content = content.to_s.green : content = content.to_s.red
+        portfolio.symbols[symbol].gains > 0 ? content = content.to_s.green : content = content.to_s.red
       end
       row << content
 
-      content = symbol_obj[1].average_delta
-      unless symbol_obj[1].average_delta.nil?
+      content = portfolio.symbols[symbol].average_delta
+      unless portfolio.symbols[symbol].average_delta.nil?
         content = content.round(2)
-        symbol_obj[1].gains > 0 ? content = content.to_s.green : content = content.to_s.red
+        portfolio.symbols[symbol].gains > 0 ? content = content.to_s.green : content = content.to_s.red
       end
       row << content
 
-      symbol_obj[1].average_delta.nil? ? content = nil : content = symbol_obj[1].currency_rate.round(2)
+      portfolio.symbols[symbol].average_delta.nil? ? content = nil : content = portfolio.symbols[symbol].currency_rate.round(2)
       row << content
 
 
@@ -69,5 +69,10 @@ module DisplayOutput
     table = TTY::Table.new(header: headers, rows: rows)
     table.render :unicode
     puts table
+
+    puts 'Gains converted to ' + portfolio.base_currency
+    if portfolio.invalid_symbols.size > 0
+      puts 'Invalid symbols detected ' + portfolio.invalid_symbols.map { |i| i.upcase}.join(",").red
+    end
   end
 end

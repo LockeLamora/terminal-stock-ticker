@@ -3,14 +3,14 @@ require 'json'
 include YahooAPI
 include CurrenciesAPI
 class TkrPortfolio
-  attr_reader :symbols, :symbol_shortlist, :base_currency, :list_of_currencies, :currency_conversions
+  attr_reader :symbols, :symbol_shortlist, :base_currency, :list_of_currencies, :currency_conversions, :invalid_symbols
 
   def initialize(csvfile = nil, currency = nil)
     @symbols = Hash.new
     @symbol_shortlist = []
     @base_currency = currency || 'GBP'
     @list_of_currencies = []
-
+    @invalid_symbols = []
     filelocation = csvfile
     if !File.file?(filelocation)
       puts 'Continuing without portfolio file'
@@ -45,12 +45,23 @@ class TkrPortfolio
     end
   end
 
+  def validity_check()
+    @symbols.each do |symbol, symbol_object|
+      if !symbol_object.valid
+        @invalid_symbols << symbol
+        @symbol_shortlist.delete(symbol)
+      end
+    end
+  end
+
   def set_names
     response = JSON.parse(get_info_for_symbols(symbol_shortlist))
     response['quoteResponse']['result'].each do |output_symbol|
       symbol_in_question = output_symbol['symbol'].downcase
       @symbols[symbol_in_question].set_name(output_symbol['longName'])
     end
+
+    validity_check()
   end
 
   def set_currencies
@@ -68,9 +79,10 @@ class TkrPortfolio
 
   def update_currencies
     @currency_conversions = get_rates_for(@base_currency, @list_of_currencies)
-    @symbols.each do |symbol|
-      currency_rate = @currency_conversions[symbol[1].currency]
-      symbol[1].set_currency_rate(currency_rate)
+    @symbols.each do |symbol, symbol_object|
+      next if !symbol_object.valid
+      currency_rate = @currency_conversions[symbol_object.currency]
+      symbol_object.set_currency_rate(currency_rate)
     end
   end
 

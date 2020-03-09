@@ -1,7 +1,13 @@
 require 'smarter_csv'
 require 'json'
+
+require_relative 'yahoo_api'
+require_relative 'currencies_api'
+require_relative 'symbol'
+
 include YahooAPI
 include CurrenciesAPI
+
 class TkrPortfolio
   attr_reader :symbols, :symbol_shortlist, :base_currency, :list_of_currencies, :currency_conversions, :invalid_symbols
 

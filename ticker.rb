@@ -1,6 +1,8 @@
 require 'require_all'
 require 'optparse'
-require_all 'src'
+require_relative 'src/portfolio'
+require_relative 'src/display_output'
+
 include DisplayOutput
 
 

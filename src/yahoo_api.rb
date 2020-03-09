@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'net/http'
+
 module YahooAPI
 
   def get_info_for_symbols(symbols=[])

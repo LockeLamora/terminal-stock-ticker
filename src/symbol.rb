@@ -1,6 +1,6 @@
 class TkrSymbol
   attr_reader :symbol, :price, :percentage_delta, :price_delta, :average_owned_price, :highest_owned_price,
-              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta
+              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency
 
   def initialize(symbol)
     @symbol = symbol
@@ -36,11 +36,12 @@ class TkrSymbol
     if @highest_owned_price.nil?
       return
     end
+    price = @price / @currency_rate
 
     if @symbol.include?('.l')
-      current = @price * @number_owned
+      current = price * @number_owned
     else
-      current = @price * 100 * @number_owned
+      current = price * 100 * @number_owned
     end
 
     previous = @average_owned_price * number_owned
@@ -53,14 +54,24 @@ class TkrSymbol
       return
     end
 
+    price = @price / @currency_rate
+
     if @symbol.include?('.l')
-      @average_delta = (@price / @average_owned_price) * 100 - 100
+      @average_delta = (price / average_owned_price) * 100 - 100
     else
-      @average_delta = ((@price * 100)  / @average_owned_price) * 100 - 100
+      @average_delta = ((price * 100)  / average_owned_price) * 100 - 100
     end
   end
 
   def set_name(name)
     @name = name
+  end
+
+  def set_currency(currency)
+    @currency = currency
+  end
+
+  def set_currency_rate(currency_rate)
+    @currency_rate = currency_rate
   end
 end

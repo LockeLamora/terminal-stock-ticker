@@ -14,8 +14,9 @@ module DisplayOutput
     headers.push 'Owned price'
     headers.push 'Num'
     headers.push  'Most paid'
-    headers.push  '£+/-'
-    headers.push '% +/-'
+    headers.push  '£Gain'
+    headers.push '%Gain'
+    headers.push 'Curr'
 
     rows = []
     portfolio.symbols.each do |symbol_obj|
@@ -29,7 +30,7 @@ module DisplayOutput
       content = symbol_obj[1].name
       row << content
 
-      content = symbol_obj[1].price
+      content = symbol_obj[1].price.to_s + ' ' + symbol_obj[1].currency
       row << content
 
       content = symbol_obj[1].price_delta.round(2).to_s.gsub('-', '')
@@ -57,6 +58,10 @@ module DisplayOutput
         symbol_obj[1].gains > 0 ? content = content.to_s.green : content = content.to_s.red
       end
       row << content
+
+      symbol_obj[1].average_delta.nil? ? content = nil : content = symbol_obj[1].currency_rate.round(2)
+      row << content
+
 
       rows << row
     end

@@ -1,6 +1,7 @@
 class TkrSymbol
   attr_reader :symbol, :price, :percentage_delta, :price_delta, :average_owned_price, :highest_owned_price,
-              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency, :valid
+              :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency, :valid, :price_normalised, :price_delta_normalised,
+              :average_owned_price_normalised, :highest_owned_price_normalised
 
   def initialize(symbol)
     @symbol = symbol
@@ -18,8 +19,8 @@ class TkrSymbol
   def update_live_totals(price, percentage_delta, price_delta)
     @price = price
     @percentage_delta = percentage_delta
-    @price_delta = price_delta
-
+    @currency == 'GBp' ? @price_normalised = (@price / 100).round(4) : @price_normalised = @price
+    @currency == 'GBp' ? @price_delta_normalised = (price_delta / 100).round(4) : @price_delta_normalised = price_delta
     update_exceeded_highest()
     calculate_gains()
     calculate_average_delta()
@@ -29,7 +30,7 @@ class TkrSymbol
     if @highest_owned_price.nil?
       return
     end
-    @price > @highest_owned_price ? @exceeded_highest_price = true : @exceeded_highest_price = false
+    @price_normalised > @highest_owned_price_normalised ? @exceeded_highest_price = true : @exceeded_highest_price = false
     self
   end
 
@@ -37,16 +38,8 @@ class TkrSymbol
     if @highest_owned_price.nil?
       return
     end
-    price = @price / @currency_rate
-
-    if @symbol.include?('.l')
-      current = price * @number_owned
-    else
-      current = price * 100 * @number_owned
-    end
-
-    previous = @average_owned_price * number_owned
-
+    current = @price_normalised * @number_owned
+    previous = @average_owned_price_normalised * @number_owned
     @gains = current - previous
   end
 
@@ -54,14 +47,7 @@ class TkrSymbol
     if @average_owned_price.nil?
       return
     end
-
-    price = @price / @currency_rate
-
-    if @symbol.include?('.l')
-      @average_delta = (price / average_owned_price) * 100 - 100
-    else
-      @average_delta = ((price * 100)  / average_owned_price) * 100 - 100
-    end
+    @average_delta = ((@average_owned_price_normalised - @price_normalised) / @price_normalised) * 100
   end
 
   def set_name(name)
@@ -75,5 +61,8 @@ class TkrSymbol
 
   def set_currency_rate(currency_rate)
     @currency_rate = currency_rate
+
+    @average_owned_price_normalised = ((@average_owned_price * @currency_rate) / 100).round(4)
+    @highest_owned_price_normalised = ((@highest_owned_price * @currency_rate) / 100).round(4)
   end
 end

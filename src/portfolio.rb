@@ -64,7 +64,7 @@ class TkrPortfolio
     response = JSON.parse(get_info_for_symbols(symbol_shortlist))
     response['quoteResponse']['result'].each do |output_symbol|
       symbol_in_question = output_symbol['symbol'].downcase
-      @symbols[symbol_in_question].set_name(output_symbol['longName'])
+      @symbols[symbol_in_question].set_name(output_symbol['shortName'])
     end
 
     validity_check()
@@ -78,7 +78,7 @@ class TkrPortfolio
       @list_of_currencies.push output_symbol['currency']
       currency_rate = @currency_conversions[output_symbol['currency'].upcase]
       @symbols[symbol_in_question].set_currency_rate(currency_rate)
-      @symbols[symbol_in_question].set_currency(output_symbol['currency'].upcase)
+      @symbols[symbol_in_question].set_currency(output_symbol['currency'])
     end
     @list_of_currencies.uniq!
   end
@@ -87,7 +87,7 @@ class TkrPortfolio
     @currency_conversions = get_rates_for(@base_currency, @list_of_currencies)
     @symbols.each do |symbol, symbol_object|
       next if !symbol_object.valid
-      currency_rate = @currency_conversions[symbol_object.currency]
+      currency_rate = @currency_conversions[symbol_object.currency.upcase]
       symbol_object.set_currency_rate(currency_rate)
     end
   end

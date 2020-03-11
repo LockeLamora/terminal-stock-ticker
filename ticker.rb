@@ -1,4 +1,3 @@
-require 'require_all'
 require 'optparse'
 require_relative 'src/portfolio'
 require_relative 'src/display_output'
@@ -13,7 +12,7 @@ def setup(symbols, currency)
   @portfolio.set_currencies
 end
 
-def update_loop(currency)
+def update_loop
   @portfolio.update_currencies
   while true do
     @portfolio.update
@@ -34,4 +33,4 @@ end.parse!
 currency = options[:currency] || 'GBP'
 
 setup(ARGV, currency)
-update_loop(currency)
+update_loop

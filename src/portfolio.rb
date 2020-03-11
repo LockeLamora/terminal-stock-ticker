@@ -64,7 +64,9 @@ class TkrPortfolio
     response = JSON.parse(get_info_for_symbols(symbol_shortlist))
     response['quoteResponse']['result'].each do |output_symbol|
       symbol_in_question = output_symbol['symbol'].downcase
-      @symbols[symbol_in_question].set_name(output_symbol['shortName'])
+      name = output_symbol['longName'].gsub('&amp;', '&')
+      name = name.gsub('UCITS ETF USD (Acc)', '')	
+      @symbols[symbol_in_question].set_name(name)
     end
 
     validity_check()

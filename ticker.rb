@@ -14,10 +14,16 @@ end
 
 def update_loop
   @portfolio.update_currencies
+  @count = 0
   while true do
     @portfolio.update
     display_ticker(@portfolio)
     sleep 10
+    @count += 1
+    if @count == 30
+      @portfolio.update_currencies
+      @count = 0
+    end
   end
 end
 

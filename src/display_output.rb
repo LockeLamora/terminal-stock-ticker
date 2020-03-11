@@ -63,10 +63,9 @@ module DisplayOutput
       end
       row << content
 
-      content = portfolio.symbols[symbol].average_delta
+      content = (portfolio.symbols[symbol].average_delta.round(2).to_s + '%').gsub('-', '')
       unless portfolio.symbols[symbol].average_delta.nil?
-        content = content.round(2)
-        portfolio.symbols[symbol].gains > 0 ? content = content.to_s.gsub('-', '').green : content = content.to_s.red
+        portfolio.symbols[symbol].gains > 0 ? content = content.green : content = content.red
       end
       row << content
 

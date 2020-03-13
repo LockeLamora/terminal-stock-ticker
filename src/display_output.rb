@@ -57,14 +57,17 @@ module DisplayOutput
       row.push portfolio.symbols[symbol].number_owned.to_s
       row.push portfolio.symbols[symbol].highest_owned_price_normalised.to_s
 
-      content = portfolio.symbols[symbol].gains.round(2)
+      content = portfolio.symbols[symbol].gains
       unless portfolio.symbols[symbol].gains.nil?
+        content = content.round(2)
         portfolio.symbols[symbol].gains > 0 ? content = content.to_s.green : content = content.to_s.gsub('-', '').red
       end
       row << content
 
-      content = (portfolio.symbols[symbol].average_delta.round(2).to_s + '%').gsub('-', '')
+      content = portfolio.symbols[symbol].average_delta
       unless portfolio.symbols[symbol].average_delta.nil?
+        content = content.round(2).to_s + '%'
+        content.gsub!('-', '')
         portfolio.symbols[symbol].gains > 0 ? content = content.green : content = content.red
       end
       row << content

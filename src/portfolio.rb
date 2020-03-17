@@ -97,6 +97,10 @@ class TkrPortfolio
   def update
     response = JSON.parse(get_info_for_symbols(symbol_shortlist))
 
+    while response['quoteResponse']['result'].nil?
+      response = JSON.parse(get_info_for_symbols(symbol_shortlist))
+    end
+    
     response['quoteResponse']['result'].each do |output_symbol|
       symbol_in_question = output_symbol['symbol'].downcase
       @symbols[symbol_in_question].update_live_totals(

@@ -14,6 +14,10 @@ Using only your holdings defined in assets.csv and defining your base currency:
 
   ```ruby ticker.rb -c GBP```
 
+To monitor a symbol with a target price (whether already present in your assets.csv or not) append the symbol with '@' and your target price (The updates will highlight the price in yellow if it falls below this price):
+
+```ruby ticker.rb -c tsla@400```
+
 Along with additional symbols defining your base currency, eg of USD:
 
 ```ruby ticker.rb  -c USD tsla aapl```

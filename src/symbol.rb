@@ -1,11 +1,12 @@
 class TkrSymbol
   attr_reader :symbol, :price, :percentage_delta, :price_delta, :average_owned_price, :highest_owned_price,
               :number_owned, :exceeded_highest_price, :gains, :name, :average_delta, :currency_rate, :currency, :valid, :price_normalised, :price_delta_normalised,
-              :average_owned_price_normalised, :highest_owned_price_normalised
+              :average_owned_price_normalised, :highest_owned_price_normalised, :target_rate
 
-  def initialize(symbol)
+  def initialize(symbol, target_rate = nil)
     @symbol = symbol
     @valid = false
+    @target_rate = target_rate.to_f
     self
   end
 
@@ -70,5 +71,9 @@ class TkrSymbol
     end
     @average_owned_price_normalised = ((@average_owned_price * @currency_rate) / 100).round(4)
     @highest_owned_price_normalised = ((@highest_owned_price * @currency_rate) / 100).round(4)
+  end
+
+  def set_target_rate(rate)
+    @target_rate = rate.to_f
   end
 end

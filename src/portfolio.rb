@@ -42,12 +42,16 @@ class TkrPortfolio
     provided_symbols = Array(provided_symbols)
 
     provided_symbols.each do |provided_symbol|
-      downcased_symbol = provided_symbol.downcase
+      provided_symbol.include?('@') ? symbol = provided_symbol.split('@')[0] : symbol = provided_symbol
+      provided_symbol.include?('@') ? target_rate = provided_symbol.split('@')[1] : target_rate = nil
+      downcased_symbol = symbol.downcase
 
       if !@symbol_shortlist.include?(downcased_symbol)
-        @symbols.merge! ({ downcased_symbol => TkrSymbol.new(downcased_symbol) })
+        @symbols.merge! ({ downcased_symbol => TkrSymbol.new(downcased_symbol, target_rate) })
         @symbol_shortlist.push downcased_symbol
       end
+
+      !target_rate.nil? ? @symbols[downcased_symbol].set_target_rate(target_rate) : nil
     end
   end
 
@@ -88,7 +92,7 @@ class TkrPortfolio
   def update_currencies
     @currency_conversions = get_rates_for(@base_currency, @list_of_currencies)
     @symbols.each do |symbol, symbol_object|
-      next if !symbol_object.valid
+      next if !symbol_object.valid || symbol_object.currency.nil?
       currency_rate = @currency_conversions[symbol_object.currency.upcase]
       symbol_object.set_currency_rate(currency_rate)
     end
@@ -100,7 +104,7 @@ class TkrPortfolio
     while response['quoteResponse']['result'].nil?
       response = JSON.parse(get_info_for_symbols(symbol_shortlist))
     end
-    
+
     response['quoteResponse']['result'].each do |output_symbol|
       symbol_in_question = output_symbol['symbol'].downcase
       @symbols[symbol_in_question].update_live_totals(

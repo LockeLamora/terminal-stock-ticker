@@ -43,6 +43,10 @@ module DisplayOutput
       row << content
 
       content = portfolio.symbols[symbol].price_normalised.to_s + ' ' + portfolio.symbols[symbol].currency.upcase
+      if portfolio.symbols[symbol].target_rate > 0
+        content += " (#{portfolio.symbols[symbol].target_rate.to_s})"
+        portfolio.symbols[symbol].price_normalised <= portfolio.symbols[symbol].target_rate ? content = content.yellow : nil
+      end
       row << content
 
       content = portfolio.symbols[symbol].price_delta_normalised.round(4).to_s.gsub('-', '')

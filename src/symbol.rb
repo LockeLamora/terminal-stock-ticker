@@ -69,8 +69,8 @@ class TkrSymbol
     if @average_owned_price.nil?
       return
     end
-    @average_owned_price_normalised = ((@average_owned_price * @currency_rate) / 100).round(4)
-    @highest_owned_price_normalised = ((@highest_owned_price * @currency_rate) / 100).round(4)
+    @average_owned_price_normalised = (@average_owned_price * @currency_rate).round(4)
+    @highest_owned_price_normalised = (@highest_owned_price * @currency_rate).round(4)
   end
 
   def set_target_rate(rate)

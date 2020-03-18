@@ -26,6 +26,6 @@ Note, for non-nasdaq symbols, be careful which symbols you provide, ie LSE share
 
 # To add your own holdings
 
-modify the assets.csv file, giving the prices paid in pence (or whatever your lowest denomination is).
+modify the assets.csv file, giving the prices paid in whole denominations (eg pounds or dollars).
 
 Shares currently worth more than the highest price paid for them will be output in yellow. An Average profit/loss column will also be added.
